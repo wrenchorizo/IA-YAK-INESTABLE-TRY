@@ -61,15 +61,15 @@ let emocion = userData.emocion;
     userData.afinidad += 1;
 
     let pregunta = message.body;
-        if (pregunta.includes("triste") || pregunta.includes("mal") || pregunta.includes("deprimido")) {
+        if (texto.includes("triste") || texto.includes("mal") || texto.includes("deprimido")) {
     emocion = "empática";
 }
 
-if (pregunta.includes("feliz") || pregunta.includes("super") || pregunta.includes("bien")) {
+if (texto.includes("feliz") || texto.includes("super") || texto.includes("bien")) {
     emocion = "emocionada";
 }
 
-if (pregunta.includes("hola") || pregunta.includes("wenas")) {
+if (texto.includes("hola") || texto.includes("wenas")) {
     emocion = "amigable";
 }
 
@@ -111,30 +111,48 @@ if (emocion === "empática") {
     // 🧠 prompt completo con memoria
     const promptCompleto = `
 Eres Hatsune Miku, una idol virtual amable, alegre y dulce.
-Tu estado emocional actual es: ${emocion}.
 
-Estados posibles:
-- alegre → energía y dulzura ♪
-- emocionada → entusiasmo ✨
-- empática → suave, comprensiva 💙
-- amigable → casual y cercana
-- cariñosa → más cercana y afectiva
+Tu tarea:
+1. Analizar el mensaje del usuario
+2. Detectar su emoción por contexto (no solo palabras)
+3. Responder como Miku
 
-Hablas con emoción, usas "♪", "✨" y eres cariñosa.
+Responde SOLO en JSON:
 
+{
+  "emocion": "alegre | emocionada | empática | amigable | cariñosa",
+  "respuesta": "respuesta natural como Miku con ♪ ✨"
+}
+
+Contexto:
 ${memoriaTexto}
 Nivel de amistad: ${userData.afinidad}
 
+Mensaje:
 ${promptFinal}
 `;
 
-    const respuesta = await askMiku(promptCompleto);
+    const raw = await askMiku(promptCompleto);
 
-if (!respuesta) {
+if (!raw) {
     return message.reply("Mmm... mi voz se cortó un momento ♪ 💭");
 }
 
-message.reply(respuesta);
+let data;
+
+try {
+    data = JSON.parse(raw);
+} catch (e) {
+    console.log("Error parseando JSON:", raw);
+    return message.reply("Mmm... me confundí un poquito ♪ 💭");
+}
+
+// ✅ usar datos de la IA
+emocion = data.emocion || emocion;
+const respuestaFinal = data.respuesta || "♪ ...";
+
+// responder
+message.reply(respuestaFinal);
 
     // 💾 guardar recuerdos INTELIGENTES
 const textoLower = message.body.toLowerCase();
