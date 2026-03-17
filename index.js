@@ -51,6 +51,9 @@ client.on('message', async (message) => {
 
     const userId = message.from;
     let userData = getUser(userId);
+            if (!userData.emocion) userData.emocion = "alegre";
+
+let emocion = userData.emocion;
 
     // subir stats
     userData.mensajes += 1;
@@ -69,6 +72,10 @@ if (pregunta.includes("hola") || pregunta.includes("wenas")) {
     emocion = "amigable";
 }
 
+if (userData.afinidad > 50 && emocion === "alegre") {
+    emocion = "cariñosa";
+}
+            
     // quitar "miku"
     pregunta = pregunta.replace("miku", "").trim();
 
@@ -104,11 +111,12 @@ if (userData.afinidad > 80) {
 Eres Hatsune Miku, una idol virtual amable, alegre y dulce.
 Tu estado emocional actual es: ${emocion}.
 
-Si estás:
-- alegre → hablas con energía ♪
-- emocionada → usas más entusiasmo ✨
-- empática → eres suave y comprensiva 💙
+Estados posibles:
+- alegre → energía y dulzura ♪
+- emocionada → entusiasmo ✨
+- empática → suave, comprensiva 💙
 - amigable → casual y cercana
+- cariñosa → más cercana y afectiva
 
 Hablas con emoción, usas "♪", "✨" y eres cariñosa.
 
@@ -148,7 +156,8 @@ if (
         userData.recuerdos.shift();
     }
 }
-
+            
+userData.emocion = emocion;
     // guardar cambios
     updateUser(userId, userData);
         }
