@@ -9,17 +9,16 @@ const client = new Client({
         dataPath: '/data/session'
     }),
     puppeteer: {
-    executablePath: '/usr/bin/chromium-browser',
-    args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--disable-features=site-per-process'
-    ]
+        // Esto usará la variable de Railway o la ruta por defecto de Linux
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu'
+        ]
     }
 });
-
 // 📱 QR
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: false });
