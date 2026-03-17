@@ -1,5 +1,5 @@
 {
-  "name": "miku-bot",
+  "name": "miku",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   "dependencies": {
     "whatsapp-web.js": "^1.23.0",
     "qrcode-terminal": "^0.12.0",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^2.6.7"
   },
   "engines": {
     "node": "18.x"
