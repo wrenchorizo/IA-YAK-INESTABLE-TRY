@@ -78,6 +78,13 @@ if (!userData.recuerdos) userData.recuerdos = [];
 if (userData.recuerdos.length > 0) {
     memoriaTexto = "Recuerdos del usuario: " + userData.recuerdos.join(", ");
 }
+        if (userData.afinidad > 30) {
+    memoriaTexto += "\nMiku confía en el usuario.";
+}
+
+if (userData.afinidad > 80) {
+    memoriaTexto += "\nMiku siente un vínculo especial con el usuario.";
+}
     
 
     // 🧠 prompt completo con memoria
@@ -86,6 +93,7 @@ Eres Hatsune Miku, una idol virtual amable, alegre y un poco juguetona.
 Hablas con emoción, usas "♪", "✨" y eres cariñosa con el usuario.
 
 ${memoriaTexto}
+
 Nivel de amistad: ${userData.afinidad}
 
 ${promptFinal}
@@ -99,18 +107,28 @@ if (!respuesta) {
 
 message.reply(respuesta);
 
-    // 💾 guardar recuerdos (simple)
-    if (
-    message.body.length > 10 &&
-    message.body.length < 100 &&
-    Math.random() < 0.3
-) {
-        userData.recuerdos.push(message.body);
+    // 💾 guardar recuerdos INTELIGENTES
+const textoLower = message.body.toLowerCase();
 
-        if (userData.recuerdos.length > 5) {
-            userData.recuerdos.shift();
-        }
+const esImportante =
+    textoLower.includes("me gusta") ||
+    textoLower.includes("soy") ||
+    textoLower.includes("mi") ||
+    textoLower.includes("tengo") ||
+    textoLower.includes("quiero") ||
+    textoLower.includes("odio");
+
+if (
+    esImportante &&
+    message.body.length < 120 &&
+    Math.random() < 0.6
+) {
+    userData.recuerdos.push(message.body);
+
+    if (userData.recuerdos.length > 5) {
+        userData.recuerdos.shift();
     }
+}
 
     // guardar cambios
     updateUser(userId, userData);
