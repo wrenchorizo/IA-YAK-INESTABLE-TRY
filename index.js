@@ -1,21 +1,37 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
+const fs = require('fs');
 const askMiku = require('./ai');
 const { getUser, updateUser } = require('./memory');
 
 // 🔐 Cliente con sesión persistente
+const getChromiumPath = () => {
+    const paths = [
+        process.env.PUPPETEER_EXECUTABLE_PATH,
+        '/usr/bin/chromium',
+        '/usr/bin/google-chrome-stable',
+        '/usr/bin/google-chrome'
+    ];
+    for (const path of paths) {
+        if (path && fs.existsSync(path)) return path;
+    }
+    return null;
+};
+
 const client = new Client({
     authStrategy: new LocalAuth({
         dataPath: '/data/session'
     }),
     puppeteer: {
-        // Esto usará la variable de Railway o la ruta por defecto de Linux
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
+        executablePath: getChromiumPath(),
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu'
+            '--disable-gpu',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process'
         ]
     }
 });
