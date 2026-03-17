@@ -27,7 +27,10 @@ console.log('🌐 Navegador encontrado en:', chromePath || 'No encontrado (usand
 
 // 2. Configuramos el cliente con la ruta encontrada
 const client = new Client({
-    authStrategy: new LocalAuth(),
+  authStrategy: new LocalAuth({
+        clientId: "miku-bot", // Esto crea una subcarpeta propia
+        dataPath: '/data/session-miku' // Ruta dentro de tu volumen
+    }),
     puppeteer: {
         executablePath: chromePath || undefined, // Si no lo encuentra, deja que puppeteer intente el default
         headless: true,
