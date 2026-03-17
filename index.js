@@ -23,17 +23,19 @@ const client = new Client({
         dataPath: '/data/session'
     }),
     puppeteer: {
-        // Forzamos la ruta que Railway usa para Chromium
-        executablePath: '/usr/bin/chromium', 
+        // Intentamos la ruta de Railway, si no, dejamos que puppeteer decida
+        executablePath: fs.existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : undefined,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu'
+            '--disable-gpu',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process'
         ]
     }
 });
-
 // 📱 QR
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: false });
