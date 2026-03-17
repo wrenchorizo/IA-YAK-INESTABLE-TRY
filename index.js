@@ -60,7 +60,7 @@ let emocion = userData.emocion;
     userData.mensajes += 1;
     userData.afinidad += 1;
 
-    let pregunta = texto;
+    let pregunta = message.body;
         if (pregunta.includes("triste") || pregunta.includes("mal") || pregunta.includes("deprimido")) {
     emocion = "empática";
 }
@@ -78,7 +78,7 @@ if (userData.afinidad > 50 && emocion === "alegre") {
 }
             
     // quitar "miku"
-    pregunta = pregunta.replace("miku", "").trim();
+    pregunta = pregunta.replace(/miku/gi, "").trim();
 
     if (!pregunta) {
         return message.reply("¿Me llamaste? ♪ ✨");
@@ -104,7 +104,9 @@ if (userData.recuerdos.length > 0) {
 if (userData.afinidad > 80) {
     memoriaTexto += "\nMiku siente un vínculo especial con el usuario.";
 }
-    
+if (emocion === "empática") {
+    memoriaTexto += "\nEl usuario se ha sentido mal recientemente.";
+}
 
     // 🧠 prompt completo con memoria
     const promptCompleto = `
