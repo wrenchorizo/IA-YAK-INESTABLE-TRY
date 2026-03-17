@@ -20,7 +20,8 @@ function getUser(userId) {
         data[userId] = {
             mensajes: 0,
             afinidad: 0,
-            recuerdos: []
+            recuerdos: [],
+emocion: "alegre"
         };
     }
 
