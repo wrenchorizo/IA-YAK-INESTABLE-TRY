@@ -93,10 +93,18 @@ ${promptFinal}
 
     const respuesta = await askMiku(promptCompleto);
 
-    message.reply(respuesta);
+if (!respuesta) {
+    return message.reply("Mmm... mi voz se cortó un momento ♪ 💭");
+}
+
+message.reply(respuesta);
 
     // 💾 guardar recuerdos (simple)
-    if (message.body.length < 100 && Math.random() < 0.3) {
+    if (
+    message.body.length > 10 &&
+    message.body.length < 100 &&
+    Math.random() < 0.3
+) {
         userData.recuerdos.push(message.body);
 
         if (userData.recuerdos.length > 5) {
