@@ -19,23 +19,22 @@ const getChromiumPath = () => {
 };
 
 const client = new Client({
-    authStrategy: new LocalAuth({
-        dataPath: '/data/session'
-    }),
+    authStrategy: new LocalAuth(),
     puppeteer: {
-        // Intentamos la ruta de Railway, si no, dejamos que puppeteer decida
-        executablePath: fs.existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : undefined,
+        headless: true,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu',
+            '--disable-accelerated-2d-canvas',
             '--no-first-run',
             '--no-zygote',
-            '--single-process'
-        ]
+            '--single-process',
+            '--disable-gpu'
+        ],
     }
 });
+
 // 📱 QR
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: false });
