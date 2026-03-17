@@ -23,15 +23,13 @@ const client = new Client({
         dataPath: '/data/session'
     }),
     puppeteer: {
-        executablePath: getChromiumPath(),
+        // En Railway la ruta correcta es /usr/bin/chromium
+        executablePath: '/usr/bin/chromium',
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process'
+            '--disable-gpu'
         ]
     }
 });
