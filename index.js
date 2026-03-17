@@ -5,6 +5,7 @@ const askMiku = require('./ai');
 const { getUser, updateUser } = require('./memory');
 
 // 🔐 Cliente con sesión persistente
+// 1. Primero defines la función (ya la tienes, déjala ahí)
 const getChromiumPath = () => {
     const paths = [
         process.env.PUPPETEER_EXECUTABLE_PATH,
@@ -18,9 +19,12 @@ const getChromiumPath = () => {
     return null;
 };
 
+// 2. AHORA SÍ, la usas aquí abajo:
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
+        // AQUÍ ES DONDE SUCEDE LA MAGIA:
+        executablePath: getChromiumPath() || undefined, 
         headless: true,
         args: [
             '--no-sandbox',
@@ -34,6 +38,7 @@ const client = new Client({
         ],
     }
 });
+
 
 // 📱 QR
 client.on('qr', (qr) => {
