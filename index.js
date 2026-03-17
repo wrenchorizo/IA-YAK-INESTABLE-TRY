@@ -7,29 +7,24 @@ const { getUser, updateUser } = require('./memory');
 // 🔐 Cliente con sesión persistente
 // 1. Primero defines la función (ya la tienes, déjala ahí)
 const getChromiumPath = () => {
-    // 1. Intentar encontrarlo automáticamente en el sistema (el método más seguro)
+    // 1. Intentar encontrarlo por comando del sistema (Lo más seguro en Railway)
     try {
         const { execSync } = require('child_process');
-        const path = execSync('which chromium || which google-chrome-stable || which google-chrome')
-            .toString().trim();
-        if (path) return path;
+        return execSync('which chromium').toString().trim();
     } catch (e) {
-        // Si falla el comando 'which', seguimos con la lista manual
-    }
-
-    // 2. Rutas manuales por si acaso
-    const paths = [
-        process.env.PUPPETEER_EXECUTABLE_PATH,
-        '/usr/bin/chromium',
-        '/usr/bin/google-chrome-stable',
-        '/nix/store/*/bin/chromium' // Ruta especial de Nixpacks
-    ];
-    
-    for (const path of paths) {
-        if (path && fs.existsSync(path)) return path;
+        // Si falla, buscar en rutas conocidas
+        const paths = [
+            '/usr/bin/chromium',
+            '/usr/bin/google-chrome-stable',
+            '/usr/local/bin/chromium'
+        ];
+        for (const path of paths) {
+            if (fs.existsSync(path)) return path;
+        }
     }
     return null;
 };
+
 
 
 // 2. AHORA SÍ, la usas aquí abajo:
