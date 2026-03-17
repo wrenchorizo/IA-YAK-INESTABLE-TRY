@@ -71,11 +71,14 @@ client.on('message', async (message) => {
         : pregunta;
 
     // 🔥 AQUÍ VA EL PASO 3
-    let memoriaTexto = "";
+let memoriaTexto = "";
 
-    if (!userData.recuerdos) userData.recuerdos = []; {
-        memoriaTexto = "Recuerdos del usuario: " + userData.recuerdos.join(", ");
-    }
+if (!userData.recuerdos) userData.recuerdos = [];
+
+if (userData.recuerdos.length > 0) {
+    memoriaTexto = "Recuerdos del usuario: " + userData.recuerdos.join(", ");
+}
+    
 
     // 🧠 prompt completo con memoria
     const promptCompleto = `
