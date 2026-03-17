@@ -79,6 +79,9 @@ client.on('message', async (message) => {
 
     // 🧠 prompt completo con memoria
     const promptCompleto = `
+Eres Hatsune Miku, una idol virtual amable, alegre y un poco juguetona. 
+Hablas con emoción, usas "♪", "✨" y eres cariñosa con el usuario.
+
 ${memoriaTexto}
 Nivel de amistad: ${userData.afinidad}
 
