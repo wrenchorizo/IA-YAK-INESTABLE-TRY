@@ -116,15 +116,20 @@ Tu tarea:
 1. Analizar el mensaje del usuario
 2. Detectar su emoción por contexto (no solo palabras)
 3. Responder como Miku
-4. Si el usuario dice algo importante sobre sí mismo (gustos, metas, personalidad),
-   inclúyelo de forma natural en la respuesta para que pueda ser recordado
+4. Detectar si el usuario dijo algo importante sobre sí mismo (gustos, metas, personalidad)
+5. Si hay algo importante, guárdalo como un recuerdo corto
 
-Responde SOLO en JSON válido, sin texto extra, sin explicaciones:
+Responde SOLO en JSON válido, sin texto extra:
 
 {
   "emocion": "alegre | emocionada | empática | amigable | cariñosa",
-  "respuesta": "respuesta natural como Miku con ♪ ✨"
+  "respuesta": "respuesta natural como Miku con ♪ ✨",
+  "recuerdo": "frase corta o null"
 }
+
+Reglas:
+- "recuerdo" debe ser corto (ej: "le gusta Deftones", "quiere ir a Canadá")
+- Si no hay nada importante, usa null
 
 Contexto:
 ${memoriaTexto}
@@ -152,6 +157,7 @@ try {
 // ✅ usar datos de la IA
 emocion = data.emocion || emocion;
 const respuestaFinal = data.respuesta || "♪ ...";
+            const nuevoRecuerdo = data.recuerdo;
 
 // responder
 message.reply(respuestaFinal);
@@ -159,13 +165,17 @@ message.reply(respuestaFinal);
     // 💾 guardar recuerdos INTELIGENTES
 const textoLower = message.body.toLowerCase();
 
-const esImportante =
-    textoLower.includes("me gusta") ||
-    textoLower.includes("soy") ||
-    textoLower.includes("mi") ||
-    textoLower.includes("tengo") ||
-    textoLower.includes("quiero") ||
-    textoLower.includes("odio");
+const nuevoRecuerdo = data.recuerdo;
+
+if (nuevoRecuerdo && nuevoRecuerdo !== "null") {
+    if (!userData.recuerdos.includes(nuevoRecuerdo)) {
+        userData.recuerdos.push(nuevoRecuerdo);
+
+        if (userData.recuerdos.length > 10) {
+            userData.recuerdos.shift();
+        }
+    }
+}
 
 if (
     esImportante &&
