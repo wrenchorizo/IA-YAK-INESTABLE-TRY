@@ -157,16 +157,12 @@ try {
 // ✅ usar datos de la IA
 emocion = data.emocion || emocion;
 const respuestaFinal = data.respuesta || "♪ ...";
-            const nuevoRecuerdo = data.recuerdo;
+const nuevoRecuerdo = data.recuerdo;
 
 // responder
 message.reply(respuestaFinal);
 
-    // 💾 guardar recuerdos INTELIGENTES
-const textoLower = message.body.toLowerCase();
-
-const nuevoRecuerdo = data.recuerdo;
-
+// 💾 memoria automática real
 if (nuevoRecuerdo && nuevoRecuerdo !== "null") {
     if (!userData.recuerdos.includes(nuevoRecuerdo)) {
         userData.recuerdos.push(nuevoRecuerdo);
@@ -174,18 +170,6 @@ if (nuevoRecuerdo && nuevoRecuerdo !== "null") {
         if (userData.recuerdos.length > 10) {
             userData.recuerdos.shift();
         }
-    }
-}
-
-if (
-    esImportante &&
-    message.body.length < 120 &&
-    Math.random() < 0.6
-) {
-    userData.recuerdos.push(message.body);
-
-    if (userData.recuerdos.length > 5) {
-        userData.recuerdos.shift();
     }
 }
             
