@@ -5,42 +5,39 @@ const askMiku = require('./ai');
 const { getUser, updateUser } = require('./memory');
 
 // 🔐 Cliente con sesión persistente
-// 1. Primero defines la función (ya la tienes, déjala ahí)
-const getChromiumPath = () => {
-    // 1. Intentar encontrarlo por comando del sistema (Lo más seguro en Railway)
-    try {
-        const { execSync } = require('child_process');
-        return execSync('which chromium').toString().trim();
-    } catch (e) {
-        // Si falla, buscar en rutas conocidas
-        const paths = [
-            '/usr/bin/chromium',
-            '/usr/bin/google-chrome-stable',
-            '/usr/local/bin/chromium'
-        ];
-        for (const path of paths) {
-            if (fs.existsSync(path)) return path;
+// 1. Buscamos la ruta real de Chromium dinámicamente
+const { execSync } = require('child_process');
+let chromePath = '';
+
+try {
+    // Intentamos encontrar la ruta con el comando 'which'
+    chromePath = execSync('which chromium').toString().trim();
+} catch (e) {
+    // Si falla, intentamos con nombres comunes en entornos Linux/Railway
+    const paths = ['/usr/bin/chromium-browser', '/usr/bin/chromium', '/usr/bin/google-chrome-stable'];
+    for (const path of paths) {
+        if (fs.existsSync(path)) {
+            chromePath = path;
+            break;
         }
     }
-    return null;
-};
+}
 
+console.log('🌐 Navegador encontrado en:', chromePath || 'No encontrado (usando default)');
 
-
-// 2. AHORA SÍ, la usas aquí abajo:
+// 2. Configuramos el cliente con la ruta encontrada
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        executablePath: '/usr/bin/chromium', // Ruta estándar en Nixpacks
+        executablePath: chromePath || undefined, // Si no lo encuentra, deja que puppeteer intente el default
         headless: true,
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
+            '--disable-gpu',
             '--no-zygote',
-            '--single-process' // Ayuda a ahorrar RAM en Railway
+            '--single-process'
         ]
     }
 });
