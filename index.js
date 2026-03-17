@@ -31,21 +31,14 @@ const getChromiumPath = () => {
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        // AQUÍ ES DONDE SUCEDE LA MAGIA:
-        executablePath: getChromiumPath() || undefined, 
+        // Esto busca el navegador en cualquier parte del sistema
+        executablePath: fs.existsSync('/usr/bin/chromium') ? '/usr/bin/chromium' : 
+                        fs.existsSync('/usr/bin/google-chrome') ? '/usr/bin/google-chrome' : undefined,
         headless: true,
-        args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process',
-            '--disable-gpu'
-        ],
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     }
 });
+
 
 
 // 📱 QR
