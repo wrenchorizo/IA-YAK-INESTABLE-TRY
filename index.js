@@ -194,13 +194,22 @@ if (!raw) {
     return message.reply("Mmm... mi voz se cortó un momento ♪ 💭");
 }
 
+// --- CAMBIA LO DE ARRIBA POR ESTO ---
 let data;
 
 try {
-    data = JSON.parse(raw);
+    // 1. Limpiamos la respuesta por si la IA puso bloques de código o espacios extra
+    const cleanRaw = raw
+        .replace(/```json/ig, '') // Quita el inicio de bloque json
+        .replace(/```/g, '')      // Quita el cierre de bloque
+        .trim();                  // Quita espacios al principio y final
+
+    // 2. Intentamos convertirlo en un objeto real
+    data = JSON.parse(cleanRaw);
 } catch (e) {
-    console.log("Error parseando JSON:", raw);
-    return message.reply("Mmm... me confundí un poquito ♪ 💭");
+    // Si aún así falla, imprimimos en la consola de Railway qué fue lo que envió la IA
+    console.log("❌ Error fatal parseando JSON. La IA envió esto:", raw);
+    return message.reply("Mmm... me confundí un poquito con mis pensamientos ♪ 💭");
 }
 
 // ✅ usar datos de la IA
