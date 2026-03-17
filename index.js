@@ -2,8 +2,6 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const askMiku = require('./ai');
 const { getUser, updateUser } = require('./memory');
-const botId = client.info.wid._serialized;
-const esMencionDirecta = message.mentionedIds && message.mentionedIds.includes(botId);
 
 // 🔐 Cliente con sesión persistente
 const client = new Client({
@@ -35,8 +33,8 @@ client.on('message', async (message) => {
         const esMencion = texto.includes("miku");
 
         const botId = client.info.wid._serialized;
-const esMencionDirecta = message.mentionedIds.includes(botId);
-
+const esMencionDirecta = message.mentionedIds && message.mentionedIds.includes(botId);
+        
         // 🔹 Detectar si es reply al bot
         const esReply = message.hasQuotedMsg;
         let respondeAMiku = false;
