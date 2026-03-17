@@ -64,6 +64,7 @@ client.on('message', async (message) => {
         if (!message.body) return;
 
 const texto = message.body.toLowerCase();
+        if (texto.startsWith('?')) return;
 
         // 🔹 Detectar si mencionan "miku"
         const esMencion = texto.includes("miku");
