@@ -21,15 +21,21 @@ async function askMiku(message) {
 
         const data = await response.json();
 
+        // 🔍 ESTO TE DIRÁ EL ERROR REAL EN LOS LOGS:
+        if (data.error) {
+            console.error("❌ Error de OpenAI:", data.error.message);
+            return null;
+        }
+
         if (!data.choices || !data.choices[0]) {
-            console.log("Error raro IA:", data);
+            console.log("⚠️ Respuesta vacía de la IA:", data);
             return null;
         }
 
         return data.choices[0].message.content;
 
     } catch (err) {
-        console.log("Error en askMiku:", err);
+        console.error("❌ Error de conexión en askMiku:", err.message);
         return null;
     }
 }
