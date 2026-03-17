@@ -6,8 +6,19 @@ const { getUser, updateUser } = require('./memory');
 // 🔐 Cliente con sesión persistente
 const client = new Client({
     authStrategy: new LocalAuth({
-        dataPath: '/data/session' // 🔥 guarda sesión en Railway
-    })
+        dataPath: '/data/session'
+    }),
+    puppeteer: {
+        args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--disable-gpu'
+        ]
+    }
 });
 
 // 📱 QR
