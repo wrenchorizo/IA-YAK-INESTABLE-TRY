@@ -27,6 +27,7 @@ client.on('ready', () => {
 client.on('message', async (message) => {
     try {
         const texto = message.body.toLowerCase();
+        if (message.fromMe) return;
 
         // 🔹 Detectar si mencionan "miku"
         const esMencion = texto.includes("miku");
@@ -72,7 +73,7 @@ client.on('message', async (message) => {
     // 🔥 AQUÍ VA EL PASO 3
     let memoriaTexto = "";
 
-    if (userData.recuerdos.length > 0) {
+    if (!userData.recuerdos) userData.recuerdos = []; {
         memoriaTexto = "Recuerdos del usuario: " + userData.recuerdos.join(", ");
     }
 
