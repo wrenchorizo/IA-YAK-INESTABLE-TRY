@@ -48,23 +48,57 @@ client.on('message', async (message) => {
         // 🔥 Activar solo si aplica
         if (esMencion || respondeAMiku) {
 
-            let pregunta = message.body;
+    const userId = message.from;
+    let userData = getUser(userId);
 
-            // quitar "miku" del mensaje
-            pregunta = pregunta.replace(/miku/gi, "").trim();
+    // subir stats
+    userData.mensajes += 1;
+    userData.afinidad += 1;
 
-            if (!pregunta) {
-                return message.reply("¿Me llamaste? ♪ ✨");
-            }
+    let pregunta = message.body;
 
-            // 🧠 Enviar contexto + pregunta
-            const promptFinal = contexto
-                ? `Contexto: ${contexto}\nUsuario: ${pregunta}`
-                : pregunta;
+    // quitar "miku"
+    pregunta = pregunta.replace(/miku/gi, "").trim();
 
-            const respuesta = await askMiku(promptFinal);
+    if (!pregunta) {
+        return message.reply("¿Me llamaste? ♪ ✨");
+    }
 
-            message.reply(respuesta);
+    // 🧠 contexto de reply
+    const promptFinal = contexto
+        ? `Contexto: ${contexto}\nUsuario: ${pregunta}`
+        : pregunta;
+
+    // 🔥 AQUÍ VA EL PASO 3
+    let memoriaTexto = "";
+
+    if (userData.recuerdos.length > 0) {
+        memoriaTexto = "Recuerdos del usuario: " + userData.recuerdos.join(", ");
+    }
+
+    // 🧠 prompt completo con memoria
+    const promptCompleto = `
+${memoriaTexto}
+Nivel de amistad: ${userData.afinidad}
+
+${promptFinal}
+`;
+
+    const respuesta = await askMiku(promptCompleto);
+
+    message.reply(respuesta);
+
+    // 💾 guardar recuerdos (simple)
+    if (message.body.length < 100 && Math.random() < 0.3) {
+        userData.recuerdos.push(message.body);
+
+        if (userData.recuerdos.length > 5) {
+            userData.recuerdos.shift();
+        }
+    }
+
+    // guardar cambios
+    updateUser(userId, userData);
         }
 
     } catch (err) {
