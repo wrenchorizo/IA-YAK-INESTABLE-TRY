@@ -37,8 +37,10 @@ client.on('ready', () => {
 // 💬 Mensajes
 client.on('message', async (message) => {
     try {
-        const texto = message.body.toLowerCase();
         if (message.fromMe) return;
+        if (!message.body) return;
+
+const texto = message.body.toLowerCase();
 
         // 🔹 Detectar si mencionan "miku"
         const esMencion = texto.includes("miku");
@@ -69,6 +71,10 @@ const esMencionDirecta = message.mentionedIds && message.mentionedIds.includes(b
 
     const userId = message.from;
     let userData = getUser(userId);
+            
+    if (!userData.mensajes) userData.mensajes = 0;
+if (!userData.afinidad) userData.afinidad = 0;
+if (!userData.recuerdos) userData.recuerdos = [];
 
 if (!userData.emocion) userData.emocion = "alegre";
 
@@ -100,7 +106,7 @@ if (userData.afinidad > 50 && emocion === "alegre") {
     pregunta = pregunta.replace(/@\d+/g, "").trim();
 
     if (!pregunta) {
-        return message.reply("¿Me llamaste? ♪ ✨");
+        return message.reply("¿Me llamaste? ♪ ✨ Estoy aquí~");
     }
 
     // 🧠 contexto de reply
