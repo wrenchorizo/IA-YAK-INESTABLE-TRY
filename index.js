@@ -2,6 +2,8 @@ const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const askMiku = require('./ai');
 const { getUser, updateUser } = require('./memory');
+const botId = client.info.wid._serialized;
+const esMencionDirecta = message.mentionedIds && message.mentionedIds.includes(botId);
 
 // 🔐 Cliente con sesión persistente
 const client = new Client({
@@ -32,6 +34,9 @@ client.on('message', async (message) => {
         // 🔹 Detectar si mencionan "miku"
         const esMencion = texto.includes("miku");
 
+        const botId = client.info.wid._serialized;
+const esMencionDirecta = message.mentionedIds.includes(botId);
+
         // 🔹 Detectar si es reply al bot
         const esReply = message.hasQuotedMsg;
         let respondeAMiku = false;
@@ -47,7 +52,7 @@ client.on('message', async (message) => {
         }
 
         // 🔥 Activar solo si aplica
-        if (esMencion || respondeAMiku) {
+        if (esMencion || respondeAMiku || esMencionDirecta) {
 
     const userId = message.from;
     let userData = getUser(userId);
@@ -79,6 +84,7 @@ if (userData.afinidad > 50 && emocion === "alegre") {
             
     // quitar "miku"
     pregunta = pregunta.replace(/miku/gi, "").trim();
+    pregunta = pregunta.replace(/@\d+/g, "").trim();
 
     if (!pregunta) {
         return message.reply("¿Me llamaste? ♪ ✨");
