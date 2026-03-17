@@ -162,9 +162,17 @@ const nuevoRecuerdo = data.recuerdo;
 // responder
 message.reply(respuestaFinal);
 
+const nuevoRecuerdo = data.recuerdo;
+
+// responder
+message.reply(respuestaFinal);
+
+// 🧠 👉 AQUÍ VA (ANTES DEL IF)
+const recuerdoLimpio = nuevoRecuerdo ? nuevoRecuerdo.toLowerCase() : "";
+
 // 💾 memoria automática real
-if (nuevoRecuerdo && nuevoRecuerdo !== "null") {
-    if (!userData.recuerdos.includes(nuevoRecuerdo)) {
+if (nuevoRecuerdo && nuevoRecuerdo !== "null" && nuevoRecuerdo.length < 100) {
+    if (!userData.recuerdos.some(r => r.toLowerCase() === recuerdoLimpio)) {
         userData.recuerdos.push(nuevoRecuerdo);
 
         if (userData.recuerdos.length > 10) {
