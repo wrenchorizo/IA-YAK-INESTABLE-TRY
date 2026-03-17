@@ -1,6 +1,7 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const askMiku = require('./ai');
+const { getUser, updateUser } = require('./memory');
 
 // 🔐 Cliente con sesión persistente
 const client = new Client({
