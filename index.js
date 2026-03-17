@@ -52,12 +52,16 @@ const esMencionDirecta = message.mentionedIds && message.mentionedIds.includes(b
         let contexto = "";
 
         if (esReply) {
-            const quotedMsg = await message.getQuotedMessage();
+    try {
+        const quotedMsg = await message.getQuotedMessage();
 
-            if (quotedMsg.fromMe) {
-                respondeAMiku = true;
-                contexto = quotedMsg.body;
-            }
+        if (quotedMsg && quotedMsg.fromMe) {
+            respondeAMiku = true;
+            contexto = quotedMsg.body;
+        }
+    } catch (e) {
+        // evita crash silencioso
+    }
         }
 
         // 🔥 Activar solo si aplica
@@ -178,7 +182,8 @@ const nuevoRecuerdo = data.recuerdo;
 message.reply(respuestaFinal);
 
 // 🧠 limpiar recuerdo
-const recuerdoLimpio = nuevoRecuerdo ? nuevoRecuerdo.toLowerCase() : "";
+
+            const recuerdoLimpio = (nuevoRecuerdo || "").toLowerCase();
 
 // 💾 memoria automática real
 if (nuevoRecuerdo && nuevoRecuerdo !== "null" && nuevoRecuerdo.length < 100) {
