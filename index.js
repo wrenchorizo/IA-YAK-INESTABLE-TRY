@@ -51,7 +51,8 @@ client.on('message', async (message) => {
 
     const userId = message.from;
     let userData = getUser(userId);
-            if (!userData.emocion) userData.emocion = "alegre";
+
+if (!userData.emocion) userData.emocion = "alegre";
 
 let emocion = userData.emocion;
 
@@ -90,7 +91,6 @@ if (userData.afinidad > 50 && emocion === "alegre") {
 
     // 🔥 AQUÍ VA EL PASO 3
 let memoriaTexto = "";
-let emocion = "alegre";
 
 if (!userData.recuerdos) userData.recuerdos = [];
 
