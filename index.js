@@ -46,7 +46,7 @@ const client = new Client({
 
 // 📱 QR
 client.on('qr', (qr) => {
-    qrcode.generate(qr, { small: false });
+    qrcode.generate(qr, { small: true });
 
     console.log("\n📱 ESCANEA ESTE QR (link directo):\n");
     console.log(`https://api.qrserver.com/v1/create-qr-code/?size=500x500&margin=20&data=${encodeURIComponent(qr)}`);
