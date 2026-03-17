@@ -1,6 +1,8 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
+
+// ===== CLIENTE =========
 const client = new Client({
     authStrategy: new LocalAuth({
         dataPath: '/data/session' // 🔥 aquí se guarda todo
@@ -13,7 +15,7 @@ client.on('qr', (qr) => {
 });
 
 client.on('ready', () => {
-    console.log('🤖 MikuBot está listo!');
+    console.log('✅ Miku quiere cantar!');
 });
 
 client.on('message', message => {
