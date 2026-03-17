@@ -23,8 +23,8 @@ const client = new Client({
         dataPath: '/data/session'
     }),
     puppeteer: {
-        // En Railway la ruta correcta es /usr/bin/chromium
-        executablePath: '/usr/bin/chromium',
+        // Forzamos la ruta que Railway usa para Chromium
+        executablePath: '/usr/bin/chromium', 
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
@@ -33,6 +33,7 @@ const client = new Client({
         ]
     }
 });
+
 // 📱 QR
 client.on('qr', (qr) => {
     qrcode.generate(qr, { small: false });
