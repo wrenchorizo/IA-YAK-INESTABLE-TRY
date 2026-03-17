@@ -56,10 +56,10 @@ client.on('message', async (message) => {
     userData.mensajes += 1;
     userData.afinidad += 1;
 
-    let pregunta = message.body;
+    let pregunta = texto;
 
     // quitar "miku"
-    pregunta = pregunta.replace(/miku/gi, "").trim();
+    pregunta = pregunta.replace("miku", "").trim();
 
     if (!pregunta) {
         return message.reply("¿Me llamaste? ♪ ✨");
