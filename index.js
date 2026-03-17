@@ -10,8 +10,10 @@ const client = new Client({
 });
 
 client.on('qr', (qr) => {
-    console.log('Escanea este QR:');
     qrcode.generate(qr, { small: true });
+
+    console.log("SI EL QR DE ARRIBA SE VE MAL, ESCANEA ESTE:");
+    console.log(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qr)}`);
 });
 
 client.on('ready', () => {
