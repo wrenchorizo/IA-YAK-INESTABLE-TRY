@@ -1,9 +1,8 @@
 [phases.setup]
-nixPkgs = ["nodejs", "chromium", "glibc", "nss", "atk", "cups", "libdrm", "dbus", "libxkbcommon", "mesa", "pango"]
+nixPkgs = ["nodejs", "chromium"]
 
 [phases.build]
 cmds = ["npm install"]
 
-[variables]
-PUPPETEER_EXECUTABLE_PATH = "/usr/bin/chromium"
-PUPPETEER_SKIP_CHROMIUM_DOWNLOAD = "true"
+[start]
+cmd = "node index.js"
