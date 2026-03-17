@@ -57,6 +57,17 @@ client.on('message', async (message) => {
     userData.afinidad += 1;
 
     let pregunta = texto;
+        if (pregunta.includes("triste") || pregunta.includes("mal") || pregunta.includes("deprimido")) {
+    emocion = "empática";
+}
+
+if (pregunta.includes("feliz") || pregunta.includes("super") || pregunta.includes("bien")) {
+    emocion = "emocionada";
+}
+
+if (pregunta.includes("hola") || pregunta.includes("wenas")) {
+    emocion = "amigable";
+}
 
     // quitar "miku"
     pregunta = pregunta.replace("miku", "").trim();
@@ -72,6 +83,7 @@ client.on('message', async (message) => {
 
     // 🔥 AQUÍ VA EL PASO 3
 let memoriaTexto = "";
+let emocion = "alegre";
 
 if (!userData.recuerdos) userData.recuerdos = [];
 
@@ -89,11 +101,18 @@ if (userData.afinidad > 80) {
 
     // 🧠 prompt completo con memoria
     const promptCompleto = `
-Eres Hatsune Miku, una idol virtual amable, alegre y un poco juguetona. 
-Hablas con emoción, usas "♪", "✨" y eres cariñosa con el usuario.
+Eres Hatsune Miku, una idol virtual amable, alegre y dulce.
+Tu estado emocional actual es: ${emocion}.
+
+Si estás:
+- alegre → hablas con energía ♪
+- emocionada → usas más entusiasmo ✨
+- empática → eres suave y comprensiva 💙
+- amigable → casual y cercana
+
+Hablas con emoción, usas "♪", "✨" y eres cariñosa.
 
 ${memoriaTexto}
-
 Nivel de amistad: ${userData.afinidad}
 
 ${promptFinal}
