@@ -162,12 +162,7 @@ const nuevoRecuerdo = data.recuerdo;
 // responder
 message.reply(respuestaFinal);
 
-const nuevoRecuerdo = data.recuerdo;
-
-// responder
-message.reply(respuestaFinal);
-
-// 🧠 👉 AQUÍ VA (ANTES DEL IF)
+// 🧠 limpiar recuerdo
 const recuerdoLimpio = nuevoRecuerdo ? nuevoRecuerdo.toLowerCase() : "";
 
 // 💾 memoria automática real
